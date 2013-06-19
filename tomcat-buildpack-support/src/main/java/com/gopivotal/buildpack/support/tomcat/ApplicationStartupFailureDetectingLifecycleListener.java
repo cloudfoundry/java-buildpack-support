@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.gopivotal.javabuildpack.support.tomcat;
+package com.gopivotal.buildpack.support.tomcat;
 
 import java.lang.reflect.Method;
 
@@ -26,17 +26,15 @@ import org.apache.catalina.LifecycleState;
 import org.apache.catalina.core.StandardContext;
 
 /**
- * This LifecycleListener shuts down Tomcat 6 or 7 if an application fails to
- * start.
+ * This LifecycleListener shuts down Tomcat 6 or 7 if an application fails to start.
  * 
- * In Cloud Foundry, which supports only a single host with a single context,
- * the listener should be added to the Host element.
+ * In Cloud Foundry, which supports only a single host with a single context, the listener
+ * should be added to the Host element.
  * 
  */
-public class ApplicationStartupFailureDetectingLifecycleListener implements
-		LifecycleListener {
+public class ApplicationStartupFailureDetectingLifecycleListener implements LifecycleListener {
 
-	/*
+	/**
 	 * @inheritDoc
 	 */
 	@Override
@@ -52,15 +50,11 @@ public class ApplicationStartupFailureDetectingLifecycleListener implements
 		}
 	}
 
-	/**
-	 * @param container
-	 */
 	private void checkContext(StandardContext context) {
 		try {
 			Method getStateMethod = StandardContext.class.getMethod("getState");
 			Object state = getStateMethod.invoke(context);
-			if (tomcat6ApplicationNotRunning(state)
-					|| tomcat7ApplicationNotRunning(state)) {
+			if (tomcat6ApplicationNotRunning(state)	|| tomcat7ApplicationNotRunning(state)) {
 				String message = "Error: Application " + context.getDisplayName() +
 						" failed (state = "	+ state + "): shutting down Tomcat";
 				System.err.println(message);
