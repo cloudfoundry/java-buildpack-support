@@ -1,0 +1,7 @@
+language: java
+jdk:
+  - openjdk8
+  - openjdk7
+  - openjdk6
+notifications:
+  webhooks: http://ec2-54-229-6-54.eu-west-1.compute.amazonaws.com/projects/64d2c5a1-0d45-4c83-b583-4f325c7e4793/status
