@@ -33,28 +33,12 @@ subprojects { project ->
 			test {
 				jvmArgs "-javaagent:${configurations.jacoco.asPath}=destfile=${buildDir}/jacoco.exec,includes=com.gopivotal.cloudfoundry.javabuildpack.support.*"
 			}
-
-			task copyDist(type: Copy, dependsOn: jar) {
-				from(project.jar) into "$stagingRoot/dist"
-			}
-
-			task copyLibs(type: Copy) {
-				configurations.runtime.resolvedConfiguration.resolvedArtifacts.each { artifact ->
-					if("${project.group}" != artifact.moduleVersion.id.group) {
-						from(artifact.file)
-					}
-				}
-				into "$stagingRoot/lib"
-			}
-
-			task distPrep(dependsOn: [ copyDist, copyLibs ])
 		}
 	}
 }
 
 // Root Project Configuration
 apply plugin: "base"
-apply plugin: "maven"
 apply plugin: "sonar-runner"
 apply plugin: "versions"
 
@@ -66,14 +50,6 @@ buildscript {
 	dependencies {
 		classpath "com.github.ben-manes:gradle-versions-plugin:0.3"
 	}
-}
-
-configurations {
-	lib
-}
-
-dependencies {
-	//???
 }
 
 ext {
@@ -111,49 +87,6 @@ uploadArchives {
 		deployerJars "org.springframework.build:aws-maven:4.8.0.RELEASE"
 	}
 
-	repositories.mavenDeployer { deployer ->
-		def baseRepositoryUrl = "s3://dist.gopivotal.com/${project.name}"
-		def repositoryUrl = "${baseRepositoryUrl}/release"
-		def snapshotRepositoryUrl = "${baseRepositoryUrl}/snapshot"
-
-		def s3credentials = [:]
-		if (project.hasProperty("s3AccessKey")) {
-			s3credentials["userName"] = "$s3AccessKey"
-		}
-
-		if (project.hasProperty("s3SecretKey")) {
-			s3credentials["passphrase"] = "$s3SecretKey"
-		}
-
-		configuration = configurations.deployerJars
-
-		repository(url: repositoryUrl) {
-			authentication(s3credentials)
-		}
-
-		snapshotRepository(url: snapshotRepositoryUrl) {
-			authentication(s3credentials)
-		}
-	}
-}
-
-task copyLibs(type: Copy) {
-	from(configurations.lib) into "$stagingRoot/lib"
-}
-
-task copyResources(type: Copy) {
-	from("src/main/resources") into "$stagingRoot"
-}
-
-task distPrep(dependsOn: [ copyLibs, copyResources ])
-
-task dist(type: Tar, dependsOn: { allprojects.distPrep }) {
-	compression = Compression.GZIP
-	from("$stagingRoot") into "$distRoot"
-}
-
-artifacts {
-	archives dist
 }
 
 task wrapper(type: Wrapper) {
