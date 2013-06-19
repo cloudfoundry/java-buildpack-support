@@ -1,16 +1,62 @@
 // All Project Configuration
 allprojects {
-	apply plugin: "eclipse"
+	group = "com.gopivotal.cloudfoundry.buildpack.support"
+
+	ext {
+		jacocoVersion = "0.6.3.201306030806"
+		junitVersion = "4.11"
+		mockitoVersion = "1.9.5"
+	}
 
 	repositories {
 		mavenCentral()
 	}
 }
 
+// Sub Project Configuration
+subprojects { project ->
+	afterEvaluate {
+		if (project.plugins.hasPlugin("java")) {
+			sourceCompatibility = JavaVersion.VERSION_1_6
+			targetCompatibility = JavaVersion.VERSION_1_6
+
+			configurations {
+				jacoco
+			}
+
+			dependencies {
+				testCompile "junit:junit:$junitVersion"
+				testCompile "org.mockito:mockito-core:$mockitoVersion"
+				jacoco "org.jacoco:org.jacoco.agent:$jacocoVersion:runtime"
+			}
+
+			test {
+				jvmArgs "-javaagent:${configurations.jacoco.asPath}=destfile=${buildDir}/jacoco.exec,includes=com.gopivotal.cloudfoundry.javabuildpack.support.*"
+			}
+
+			task copyDist(type: Copy, dependsOn: jar) {
+				from(project.jar) into "$stagingRoot/dist"
+			}
+
+			task copyLibs(type: Copy) {
+				configurations.runtime.resolvedConfiguration.resolvedArtifacts.each { artifact ->
+					if("${project.group}" != artifact.moduleVersion.id.group) {
+						from(artifact.file)
+					}
+				}
+				into "$stagingRoot/lib"
+			}
+
+			task distPrep(dependsOn: [ copyDist, copyLibs ])
+		}
+	}
+}
+
 // Root Project Configuration
 apply plugin: "base"
+apply plugin: "maven"
+apply plugin: "sonar-runner"
 apply plugin: "versions"
-
 
 buildscript {
 	repositories {
@@ -22,8 +68,96 @@ buildscript {
 	}
 }
 
+configurations {
+	lib
+}
+
+dependencies {
+	//???
+}
+
+ext {
+	distRoot = "$name-$version"
+	stagingRoot = "$buildDir/distributions/$distRoot"
+}
+
+sonarRunner {
+	sonarProperties {
+		property "sonar.host.url", "$sonarHostUrl"
+		property "sonar.jdbc.url", "$sonarJdbcUrl"
+		property "sonar.jdbc.driverClassName", "$sonarJdbcDriver"
+		property "sonar.jdbc.username", "$sonarJdbcUsername"
+		property "sonar.jdbc.password", "$sonarJdbcPassword"
+		property "sonar.login", "$sonarLogin"
+		property "sonar.password", "$sonarPassword"
+		property "sonar.core.codeCoveragePlugin", "jacoco"
+		property "sonar.jacoco.reportPath", "${buildDir.name}/jacoco.exec"
+		property "sonar.links.ci", "http://ec2-54-246-210-97.eu-west-1.compute.amazonaws.com/job/tc%20Server%20Buildpack%20Builder/" //???
+		property "sonar.links.issue", "https://www.pivotaltracker.com/projects/788065" //???
+		property "sonar.links.scm", "https://github.com/cloudfoundry/javabuildpack-support"
+
+		if (project.hasProperty("sonarBranch")) {
+			property "sonar.branch", URLEncoder.encode("$sonarBranch")
+		}
+	}
+}
+
+uploadArchives {
+	configurations {
+		deployerJars
+	}
+
+	dependencies {
+		deployerJars "org.springframework.build:aws-maven:4.8.0.RELEASE"
+	}
+
+	repositories.mavenDeployer { deployer ->
+		def baseRepositoryUrl = "s3://dist.gopivotal.com/${project.name}"
+		def repositoryUrl = "${baseRepositoryUrl}/release"
+		def snapshotRepositoryUrl = "${baseRepositoryUrl}/snapshot"
+
+		def s3credentials = [:]
+		if (project.hasProperty("s3AccessKey")) {
+			s3credentials["userName"] = "$s3AccessKey"
+		}
+
+		if (project.hasProperty("s3SecretKey")) {
+			s3credentials["passphrase"] = "$s3SecretKey"
+		}
+
+		configuration = configurations.deployerJars
+
+		repository(url: repositoryUrl) {
+			authentication(s3credentials)
+		}
+
+		snapshotRepository(url: snapshotRepositoryUrl) {
+			authentication(s3credentials)
+		}
+	}
+}
+
+task copyLibs(type: Copy) {
+	from(configurations.lib) into "$stagingRoot/lib"
+}
+
+task copyResources(type: Copy) {
+	from("src/main/resources") into "$stagingRoot"
+}
+
+task distPrep(dependsOn: [ copyLibs, copyResources ])
+
+task dist(type: Tar, dependsOn: { allprojects.distPrep }) {
+	compression = Compression.GZIP
+	from("$stagingRoot") into "$distRoot"
+}
+
+artifacts {
+	archives dist
+}
+
 task wrapper(type: Wrapper) {
 	gradleVersion = "1.6"
 }
 
-defaultTasks 'build'
+defaultTasks = ['build']

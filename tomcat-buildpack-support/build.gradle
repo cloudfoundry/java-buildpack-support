@@ -1,10 +1,5 @@
 apply plugin: "java"
 
 dependencies {
-	//compile 'org.apache.tomcat:catalina:6.0.26'
 	compile 'org.apache.tomcat:tomcat-catalina:7.0.12'
-}
-
-repositories {
-    mavenCentral()
 }
