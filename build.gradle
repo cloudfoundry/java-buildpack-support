@@ -6,6 +6,7 @@ allprojects {
 		jacocoVersion = "0.6.3.201306030806"
 		junitVersion = "4.11"
 		mockitoVersion = "1.9.5"
+		tomcatVersion = "7.0.12"
 	}
 
 	repositories {
