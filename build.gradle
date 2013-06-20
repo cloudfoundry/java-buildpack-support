@@ -50,6 +50,8 @@ buildscript {
 
 	dependencies {
 		classpath "com.github.ben-manes:gradle-versions-plugin:0.3"
+		classpath "com.amazonaws:aws-java-sdk:1.4.7"
+		classpath "org.yaml:snakeyaml:1.12"
 	}
 }
 
@@ -79,19 +81,10 @@ sonarRunner {
 	}
 }
 
-uploadArchives {
-	configurations {
-		deployerJars
-	}
-
-	dependencies {
-		deployerJars "org.springframework.build:aws-maven:4.8.0.RELEASE"
-	}
-
-}
-
 task wrapper(type: Wrapper) {
 	gradleVersion = "1.6"
 }
 
 defaultTasks = ['build']
+
+
