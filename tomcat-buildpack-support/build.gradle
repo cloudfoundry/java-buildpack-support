@@ -15,7 +15,7 @@ task publish(type: RepositoryPublisher, dependsOn: jar) {
 
 		accessKey = "$s3AccessKey"
 		secretAccessKey = "$s3SecretKey"
-		
+
 		repositoryRoot = "s3://download.pivotal.io/tomcat-buildpack-support/lucid/x86_64"
 		version = jar.version
 	}
@@ -29,6 +29,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata
 import org.yaml.snakeyaml.Yaml
 
 class RepositoryPublisher extends DefaultTask {
+
 	@InputFile
 	File jarFile
 
@@ -63,7 +64,7 @@ class RepositoryPublisher extends DefaultTask {
 		try {
 			def indexObject = service.getObject(bucket, indexKey)
 
-			indexContents = yaml.load(indexObject.objectContent)		
+			indexContents = yaml.load(indexObject.objectContent)
 		} catch (AmazonServiceException e) {
     		if (!e.getErrorCode().equals("NoSuchKey")) {
         		throw e;
