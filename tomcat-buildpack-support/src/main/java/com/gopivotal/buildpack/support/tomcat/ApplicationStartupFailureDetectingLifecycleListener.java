@@ -51,17 +51,18 @@ public class ApplicationStartupFailureDetectingLifecycleListener implements Life
 	}
 
 	private void checkContext(StandardContext context) {
+		Object state = null;
 		try {
 			Method getStateMethod = StandardContext.class.getMethod("getState");
-			Object state = getStateMethod.invoke(context);
-			if (tomcat6ApplicationNotRunning(state)	|| tomcat7ApplicationNotRunning(state)) {
-				String message = "Error: Application " + context.getDisplayName() +
-						" failed (state = "	+ state + "): shutting down Tomcat";
-				System.err.println(message);
-				throw new IllegalStateException(message);
-			}
+			state = getStateMethod.invoke(context);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		if (tomcat6ApplicationNotRunning(state)	|| tomcat7ApplicationNotRunning(state)) {
+			String message = "Error: Application " + context.getDisplayName() +
+					" failed (state = "	+ state + "): shutting down Tomcat";
+			System.err.println(message);
+			throw new IllegalStateException(message);
 		}
 	}
 
