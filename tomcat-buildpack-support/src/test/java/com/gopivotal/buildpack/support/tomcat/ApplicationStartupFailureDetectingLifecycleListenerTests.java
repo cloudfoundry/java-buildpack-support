@@ -17,6 +17,7 @@
 package com.gopivotal.buildpack.support.tomcat;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.apache.catalina.Container;
@@ -24,6 +25,7 @@ import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.core.StandardContext;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -33,11 +35,16 @@ import org.junit.Test;
 public class ApplicationStartupFailureDetectingLifecycleListenerTests {
 
 	private static final Object TEST_DATA = new Object();
+	
+	LifecycleListener listener;
+	
+	@Before
+	public void setup() {
+		this.listener = new ApplicationStartupFailureDetectingLifecycleListener();
+	}
 
 	@Test
-	public void testFailedApplication() {
-		LifecycleListener listener = new ApplicationStartupFailureDetectingLifecycleListener();
-		
+	public void testFailedApplicationInTomcat6() {
 		Container mockContainer = mock(Container.class);
 		Container[] mockStandardContexts = new Container[1];
 		mockStandardContexts[0] = mock(StandardContext.class);
@@ -45,6 +52,8 @@ public class ApplicationStartupFailureDetectingLifecycleListenerTests {
 		when(mockContainer.findChildren()).thenReturn(mockStandardContexts);
 		LifecycleEvent event = new LifecycleEvent(mockContainer, Lifecycle.AFTER_START_EVENT, TEST_DATA);
 		listener.lifecycleEvent(event);
+		verify(mockContainer).findChildren();
+		verify(mockStandardContexts[0]).getState();
 	}
 
 }
