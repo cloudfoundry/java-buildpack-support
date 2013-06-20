@@ -1,0 +1,11 @@
+apply plugin: "groovy"
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile "com.amazonaws:aws-java-sdk:1.4.7"
+	compile "org.yaml:snakeyaml:1.12"
+}
+
