@@ -5,3 +5,78 @@ dependencies {
 	testRuntime "org.apache.tomcat:tomcat-util:$tomcatVersion"
 	testRuntime "org.apache.tomcat:tomcat-coyote:$tomcatVersion"
 }
+
+task publish(type: RepositoryPublisher, dependsOn: jar) {
+	afterEvaluate {
+		jarFile = jar.archivePath
+
+		assert project.hasProperty("s3AccessKey")
+		assert project.hasProperty("s3SecretKey")
+
+		accessKey = "$s3AccessKey"
+		secretAccessKey = "$s3SecretKey"
+		
+		repositoryRoot = "s3://download.pivotal.io/tomcat-buildpack-support/lucid/x86_64"
+		version = jar.version
+	}
+}
+
+import com.amazonaws.auth.BasicAWSCredentials
+import com.amazonaws.AmazonServiceException
+import com.amazonaws.services.s3.AmazonS3
+import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.ObjectMetadata
+import org.yaml.snakeyaml.Yaml
+
+class RepositoryPublisher extends DefaultTask {
+	@InputFile
+	File jarFile
+
+	String accessKey
+	String secretAccessKey
+	String repositoryRoot
+	String version
+
+	@TaskAction
+	void publish() {
+		BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretAccessKey)
+		AmazonS3 service = new AmazonS3Client(credentials)
+		def (bucket, rootPath) = parseRepositoryRoot()
+
+		def key = rootPath + "/" + jarFile.name
+		service.putObject(bucket, key, jarFile)
+
+		updateIndex(service, bucket, rootPath, jarFile.name)
+	}
+
+	def parseRepositoryRoot() {
+		URI uri = URI.create(repositoryRoot)
+		def rootPath = uri.path.substring(1)
+		assert !rootPath.endsWith("/")
+		return [uri.host, rootPath]
+	}
+
+	def updateIndex(service, bucket, rootPath, jarFileName) {
+		def indexKey = rootPath + "/index.yml"
+		def indexContents
+		def yaml = new Yaml()
+		try {
+			def indexObject = service.getObject(bucket, indexKey)
+
+			indexContents = yaml.load(indexObject.objectContent)		
+		} catch (AmazonServiceException e) {
+    		if (!e.getErrorCode().equals("NoSuchKey")) {
+        		throw e;
+    		}
+    		indexContents = [:]
+		}
+
+		indexContents[version] = "http://" + bucket + ".s3.amazonaws.com/" + rootPath + "/" + jarFileName
+
+		String indexContentString = yaml.dump(indexContents)
+		def indexBytes = indexContentString.getBytes("UTF-8")
+		def metadata = new ObjectMetadata()
+		metadata.contentLength = indexBytes.length
+		service.putObject(bucket, indexKey, new ByteArrayInputStream(indexBytes), metadata)
+	}
+}
