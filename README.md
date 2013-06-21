@@ -1,4 +1,5 @@
 # Java Buildpack Support
+[![Build Status](https://travis-ci.org/cloudfoundry/java-buildpack-support.png?branch=master)](https://travis-ci.org/cloudfoundry/java-buildpack-support)
 
 A collection of JARs in support of the Java Buildpack.
 
@@ -7,7 +8,7 @@ A collection of JARs in support of the Java Buildpack.
 This project is built with Gradle. To build the JARs:
 
 	./gradlew
-	
+
 To publish the JARs to Amazon S3, use the `publish` target:
 
 	./gradlew publish
