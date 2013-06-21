@@ -70,23 +70,23 @@ public class ApplicationStartupFailureDetectingLifecycleListener implements Life
 	}
 
 	private void checkContext(StandardContext context) {
-		Object state = null;
 		try {
 			Method getStateMethod = StandardContext.class.getMethod("getState");
-			state = getStateMethod.invoke(context);
+			Object state = getStateMethod.invoke(context);
+			if (tomcat6ApplicationNotRunning(state)	|| tomcat7ApplicationNotRunning(state)) {
+				String applicationName = context.getDisplayName();
+				if (applicationName == null) {
+					applicationName = context.getName();
+				}
+				String message = "Error: Application '" + applicationName +
+						"' failed (state = "	+ state + "): see Tomcat's logs for details. Halting Tomcat.";
+				System.err.println(message);
+				System.err.flush();
+				System.out.flush();
+				this.runtime.halt(404);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		if (tomcat6ApplicationNotRunning(state)	|| tomcat7ApplicationNotRunning(state)) {
-			String applicationName = context.getDisplayName();
-			if (applicationName == null) {
-				applicationName = context.getName();
-			}
-			String message = "Error: Application '" + applicationName +
-					"' failed (state = "	+ state + "): see Tomcat's logs for details. Halting Tomcat.";
-			System.err.println(message);
-			System.err.flush();
-			this.runtime.halt(404);
 		}
 	}
 
