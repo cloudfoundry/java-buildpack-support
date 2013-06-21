@@ -34,6 +34,25 @@ import org.apache.catalina.core.StandardContext;
  */
 public class ApplicationStartupFailureDetectingLifecycleListener implements LifecycleListener {
 
+	private final Runtime runtime;
+	
+	/**
+	 * Construct the listener with the system {@link Runtime}.
+	 */
+	public ApplicationStartupFailureDetectingLifecycleListener() {
+		this.runtime = Runtime.getRuntime();
+	}
+	
+	/**
+	 * Construct the listener with the specified {@link Runtime}. This method is intended for
+	 * use only in testing.
+	 * 
+	 * @param runtime the {@link Runtime} to be used to halt Tomcat
+	 */
+	ApplicationStartupFailureDetectingLifecycleListener(Runtime runtime) {
+		this.runtime = runtime;
+	}
+
 	/**
 	 * @inheritDoc
 	 */
@@ -59,10 +78,15 @@ public class ApplicationStartupFailureDetectingLifecycleListener implements Life
 			e.printStackTrace();
 		}
 		if (tomcat6ApplicationNotRunning(state)	|| tomcat7ApplicationNotRunning(state)) {
-			String message = "Error: Application " + context.getDisplayName() +
-					" failed (state = "	+ state + "): shutting down Tomcat";
+			String applicationName = context.getDisplayName();
+			if (applicationName == null) {
+				applicationName = context.getName();
+			}
+			String message = "Error: Application '" + applicationName +
+					"' failed (state = "	+ state + "): see Tomcat's logs for details. Halting Tomcat.";
 			System.err.println(message);
-			throw new IllegalStateException(message);
+			System.err.flush();
+			this.runtime.halt(404);
 		}
 	}
 
