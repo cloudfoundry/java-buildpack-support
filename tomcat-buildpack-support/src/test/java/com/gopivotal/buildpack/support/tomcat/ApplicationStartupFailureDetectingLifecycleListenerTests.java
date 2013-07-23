@@ -1,4 +1,5 @@
 /*
+ * Cloud Foundry Java Buildpack Support
  * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,13 +40,13 @@ import org.junit.Test;
 public class ApplicationStartupFailureDetectingLifecycleListenerTests {
 
 	private static final Object TEST_DATA = new Object();
-	
+
 	LifecycleListener listener;
 	Container mockContainer;
 	StandardContext mockStandardContext;
 	LifecycleEvent event;
 	Runtime runtime;
-	
+
 	@Before
 	public void setup() {
 		this.mockContainer = mock(Container.class);
@@ -78,7 +79,7 @@ public class ApplicationStartupFailureDetectingLifecycleListenerTests {
 		verify(this.mockStandardContext).getDisplayName();
 		verify(this.runtime).halt(404);
 	}
-	
+
 	@Test
 	public void testIrrelevantEvent() {
 		when(this.mockStandardContext.getState()).thenReturn(LifecycleState.STARTED);

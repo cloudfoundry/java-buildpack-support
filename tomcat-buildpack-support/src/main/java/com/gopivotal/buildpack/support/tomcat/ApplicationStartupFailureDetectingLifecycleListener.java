@@ -1,4 +1,5 @@
 /*
+ * Cloud Foundry Java Buildpack Support
  * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,26 +28,26 @@ import org.apache.catalina.core.StandardContext;
 
 /**
  * This LifecycleListener shuts down Tomcat 6 or 7 if an application fails to start.
- * 
+ *
  * In Cloud Foundry, which supports only a single host with a single context, the listener
  * should be added to the Host element.
- * 
+ *
  */
 public class ApplicationStartupFailureDetectingLifecycleListener implements LifecycleListener {
 
 	private final Runtime runtime;
-	
+
 	/**
 	 * Construct the listener with the system {@link Runtime}.
 	 */
 	public ApplicationStartupFailureDetectingLifecycleListener() {
 		this.runtime = Runtime.getRuntime();
 	}
-	
+
 	/**
 	 * Construct the listener with the specified {@link Runtime}. This method is intended for
 	 * use only in testing.
-	 * 
+	 *
 	 * @param runtime the {@link Runtime} to be used to halt Tomcat
 	 */
 	ApplicationStartupFailureDetectingLifecycleListener(Runtime runtime) {
