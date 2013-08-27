@@ -25,6 +25,6 @@ dependencies {
 
 task publish(type: RepositoryPublisher, dependsOn: jar) {
 	afterEvaluate {
-		repositoryRoot = "s3://download.pivotal.io/tomcat-buildpack-support/lucid/x86_64"
+		repositoryRoot = "s3://download.pivotal.io/tomcat-buildpack-support"
 	}
 }
