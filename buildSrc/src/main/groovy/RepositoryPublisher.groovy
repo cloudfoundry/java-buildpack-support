@@ -119,6 +119,7 @@ class RepositoryPublisher extends DefaultTask {
 
 		def metadata = new ObjectMetadata()
 		metadata.contentLength = content.length
+		metadata.contentType = "text/x-yaml"
 
 		amazonS3.putObject(bucket, indexKey, new ByteArrayInputStream(content), metadata)
 	}
