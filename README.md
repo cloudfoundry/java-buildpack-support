@@ -8,6 +8,12 @@ A collection of JARs in support of the [Java Buildpack](https://github.com/cloud
 This is a JAR which the Java buildpack places in Tomcat's `lib` directory. It contains a listener which,
 when configured in Tomcat, ensures that Tomcat shuts down if an application fails to start.
 
+The list of published versions of this JAR can be found at the following location.
+
+| JAR | Location
+| --- | ---------
+| Tomcat Buildpack Support | <http://download.pivotal.io.s3.amazonaws.com/tomcat-buildpack-support/index.yml>
+
 ## Building
 
 This project is built with Gradle. To build the JARs:
