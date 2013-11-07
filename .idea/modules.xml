@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/javabuildpack-support.iml" filepath="$PROJECT_DIR$/javabuildpack-support.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tomcat-buildpack-support/tomcat-buildpack-support.iml" filepath="$PROJECT_DIR$/tomcat-buildpack-support/tomcat-buildpack-support.iml" />
+    </modules>
+  </component>
+</project>
+
