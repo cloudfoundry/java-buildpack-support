@@ -4,4 +4,7 @@ jdk:
   - openjdk7
   - openjdk6
 notifications:
-  webhooks: http://build-monitor.cfapps.io/projects/JBPS/webhook
+  webhooks:
+    urls:
+      - http://build-monitor.cfapps.io/projects/JBPS/webhook
+    on_start: true
