@@ -21,10 +21,10 @@ import org.apache.catalina.Container;
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
-import org.apache.catalina.LifecycleState;
 import org.apache.catalina.core.StandardContext;
 
 import java.lang.reflect.Method;
+import java.util.logging.Logger;
 
 /**
  * This LifecycleListener shuts down Tomcat 6 or 7 if an application fails to start.
@@ -32,15 +32,21 @@ import java.lang.reflect.Method;
  * In Cloud Foundry, which supports only a single host with a single context, the listener should be added to the Host
  * element.
  */
-public class ApplicationStartupFailureDetectingLifecycleListener implements LifecycleListener {
+public final class ApplicationStartupFailureDetectingLifecycleListener implements LifecycleListener {
+
+    private static final int EXIT_CODE = 404;
+
+    private final Logger logger = Logger.getLogger(getClass().getName());
 
     private final Runtime runtime;
+
+    private final StateParser stateParser = new StandardStateParser();
 
     /**
      * Construct the listener with the system {@link Runtime}.
      */
     public ApplicationStartupFailureDetectingLifecycleListener() {
-        this.runtime = Runtime.getRuntime();
+        this(Runtime.getRuntime());
     }
 
     /**
@@ -58,45 +64,47 @@ public class ApplicationStartupFailureDetectingLifecycleListener implements Life
     @Override
     public void lifecycleEvent(LifecycleEvent event) {
         if (event.getType() == Lifecycle.AFTER_START_EVENT) {
-            Container host = (Container) event.getLifecycle();
-            Container[] contexts = host.findChildren();
-            for (Container container : contexts) {
-                if (container instanceof StandardContext) {
-                    checkContext((StandardContext) container);
+            Container lifecycle = (Container) event.getLifecycle();
+            for (Container child : lifecycle.findChildren()) {
+                if (child instanceof StandardContext) {
+                    checkContext((StandardContext) child);
                 }
             }
         }
     }
 
     private void checkContext(StandardContext context) {
-        try {
-            Method getStateMethod = StandardContext.class.getMethod("getState");
-            Object state = getStateMethod.invoke(context);
-            if (tomcat6ApplicationNotRunning(state) || tomcat7ApplicationNotRunning(state)) {
-                String applicationName = context.getDisplayName();
-                if (applicationName == null) {
-                    applicationName = context.getName();
-                }
-                String message = "Error: Application '" + applicationName +
-                        "' failed (state = " + state + "): see Tomcat's logs for details. Halting Tomcat.";
-                System.err.println(message);
-                System.err.flush();
-                System.out.flush();
-                this.runtime.halt(404);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        Object state = getState(context);
+
+        if (!this.stateParser.isRunning(state)) {
+            String applicationName = getApplicationName(context);
+
+            this.logger.severe(String.format("Error: Application '%s' failed (state = %s): see Tomcat's logs for " +
+                    "details. Halting Tomcat.", applicationName, state));
+
+            System.err.flush();
+            System.out.flush();
+            this.runtime.halt(EXIT_CODE);
         }
     }
 
-    private boolean tomcat6ApplicationNotRunning(Object state) {
-        return state instanceof Integer && (Integer) state != 1;
+    private String getApplicationName(StandardContext context) {
+        String displayName = context.getDisplayName();
+
+        if (displayName == null) {
+            return context.getName();
+        }
+
+        return displayName;
     }
 
-    private boolean tomcat7ApplicationNotRunning(Object state) {
-        // Avoid class loading errors in Tomcat 6 by checking for Integer first.
-        return !(state instanceof Integer) && state instanceof LifecycleState
-                && (LifecycleState) state != LifecycleState.STARTED;
+    private Object getState(StandardContext context) {
+        try {
+            Method getStateMethod = StandardContext.class.getMethod("getState");
+            return getStateMethod.invoke(context);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 
 }
