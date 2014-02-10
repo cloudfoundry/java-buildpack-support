@@ -1,7 +1,6 @@
-.gradle
 .idea/libraries
+.idea/sonarqube
 .idea/tasks.xml
 .idea/workspace.xml
-bin
-build
-out
+dependency-reduced-pom.xml
+target

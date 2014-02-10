@@ -14,27 +14,6 @@ The list of published versions of this JAR can be found at the following locatio
 | --- | ---------
 | Tomcat Buildpack Support | <http://download.pivotal.io.s3.amazonaws.com/tomcat-buildpack-support/index.yml>
 
-## Building
-
-This project is built with Gradle. To build the JARs:
-
-```bash
-./gradlew
-```
-
-To publish the JARs to Amazon S3, use the `publish` target:
-
-```bash
-./gradlew publish
-```
-
-## Running Tests
-To run the tests, do the following:
-
-```bash
-./gradlew
-```
-
 ## Contributing
 [Pull requests][] are welcome; see the [contributor guidelines][] for details.
 
