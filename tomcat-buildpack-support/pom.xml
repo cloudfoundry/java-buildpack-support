@@ -46,6 +46,11 @@
             <artifactId>tomcat-catalina</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-coyote</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
