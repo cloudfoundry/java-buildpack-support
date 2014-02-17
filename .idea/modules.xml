@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/java-buildpack-support.iml" filepath="$PROJECT_DIR$/java-buildpack-support.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tomcat-buildpack-support/tomcat-buildpack-support.iml" filepath="$PROJECT_DIR$/tomcat-buildpack-support/tomcat-buildpack-support.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tomcat-lifecycle-support/tomcat-lifecycle-support.iml" filepath="$PROJECT_DIR$/tomcat-lifecycle-support/tomcat-lifecycle-support.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tomcat-logging-support/tomcat-logging-support.iml" filepath="$PROJECT_DIR$/tomcat-logging-support/tomcat-logging-support.iml" />
     </modules>
   </component>
 </project>
