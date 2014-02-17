@@ -16,17 +16,20 @@
 
 package com.gopivotal.buildpack.support.tomcat;
 
+import java.util.logging.ConsoleHandler;
+
 /**
- * An abstraction for determining the current state of the Tomcat instance
+ * An extension of {@link ConsoleHandler} that outputs to {@link System#out}.
  */
-interface StateParser {
+public final class CloudFoundryConsoleHandler extends ConsoleHandler {
 
     /**
-     * Whether the Tomcat instance is running
-     *
-     * @param state the state object to parse
-     *
-     * @return whether the Tomcat instance is running
+     * Creates a new instance setting the formatter and output stream
      */
-    boolean isRunning(Object state);
+    public CloudFoundryConsoleHandler() {
+        super();
+        setFormatter(new CloudFoundryFormatter());
+        setOutputStream(System.out);
+    }
+
 }
