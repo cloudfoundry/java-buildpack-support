@@ -2,5 +2,4 @@
 .idea/sonarqube
 .idea/tasks.xml
 .idea/workspace.xml
-dependency-reduced-pom.xml
 target

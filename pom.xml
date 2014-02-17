@@ -64,6 +64,14 @@
     </dependencyManagement>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.springframework.build</groupId>
+                <artifactId>aws-maven</artifactId>
+                <version>5.0.0.RELEASE</version>
+            </extension>
+        </extensions>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -106,5 +114,16 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>cloudfoundry-release</id>
+            <url>s3://maven.gopivotal.com/release</url>
+        </repository>
+        <snapshotRepository>
+            <id>cloudfoundry-snapshot</id>
+            <url>s3://maven.gopivotal.com/snapshot</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>
