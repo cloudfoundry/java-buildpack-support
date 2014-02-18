@@ -33,16 +33,16 @@ public final class CloudFoundryFormatterTest {
         LogRecord record = new LogRecord(Level.INFO, "Test Message");
         record.setLoggerName("short.logger");
 
-        assertEquals("[CONTAINER] short.logger                     INFO    Test Message\n",
+        assertEquals("[CONTAINER] short.logger                                       INFO    Test Message\n",
                 this.formatter.format(record));
     }
 
     @Test
     public void truncateLogger() {
         LogRecord record = new LogRecord(Level.INFO, "Test Message");
-        record.setLoggerName("fantastic.extra.super.really.long.logger");
+        record.setLoggerName("fantastic.extra.special.awesome.super.really.long.logger");
 
-        assertEquals("[CONTAINER] c.extra.super.really.long.logger INFO    Test Message\n",
+        assertEquals("[CONTAINER] tic.extra.special.awesome.super.really.long.logger INFO    Test Message\n",
                 this.formatter.format(record));
     }
 
@@ -51,7 +51,7 @@ public final class CloudFoundryFormatterTest {
         LogRecord record = new LogRecord(Level.WARNING, "Test Message");
         record.setLoggerName("short.logger");
 
-        assertEquals("[CONTAINER] short.logger                     WARNING Test Message\n",
+        assertEquals("[CONTAINER] short.logger                                       WARNING Test Message\n",
                 this.formatter.format(record));
     }
 

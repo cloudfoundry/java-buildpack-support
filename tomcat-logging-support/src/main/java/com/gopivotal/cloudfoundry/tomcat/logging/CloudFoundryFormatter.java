@@ -26,9 +26,9 @@ import java.util.logging.LogRecord;
  */
 public final class CloudFoundryFormatter extends Formatter {
 
-    private static final Integer MAX_LENGTH = 32;
+    private static final Integer MAX_LENGTH = 50;
 
-    private static final String FORMAT = "[CONTAINER] %-32s %-7s %s%s\n";
+    private static final String FORMAT = String.format("[CONTAINER] %%-%ss %%-7s %%s%%s\n", MAX_LENGTH);
 
     @Override
     public String format(LogRecord record) {
