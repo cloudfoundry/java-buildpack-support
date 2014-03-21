@@ -1,5 +1,5 @@
 # Java Buildpack Support
-[![Build Status](https://travis-ci.org/cloudfoundry/java-buildpack-support.png?branch=master)](https://travis-ci.org/cloudfoundry/java-buildpack-support)
+[![Build Status](https://travis-ci.org/cloudfoundry/java-buildpack-support.svg?branch=master)](https://travis-ci.org/cloudfoundry/java-buildpack-support)
 
 A collection of JARs in support of the [Java Buildpack](https://github.com/cloudfoundry/java-buildpack).
 
