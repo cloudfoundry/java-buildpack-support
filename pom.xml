@@ -36,6 +36,7 @@
     <modules>
         <module>tomcat-lifecycle-support</module>
         <module>tomcat-logging-support</module>
+        <module>tomcat-access-logging-support</module>
     </modules>
 
     <dependencyManagement>
