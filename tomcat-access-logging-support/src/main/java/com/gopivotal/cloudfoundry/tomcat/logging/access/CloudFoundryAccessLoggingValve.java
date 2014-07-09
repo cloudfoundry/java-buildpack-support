@@ -23,6 +23,7 @@ import org.apache.catalina.valves.AccessLogValve;
  */
 public final class CloudFoundryAccessLoggingValve extends AccessLogValve {
 
+    @SuppressWarnings("PMD.SystemPrintln")
     public void log(String message) {
         System.out.println(message);
     }
