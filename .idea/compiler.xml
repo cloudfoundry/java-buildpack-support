@@ -22,11 +22,15 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="tomcat-access-lifecycle-support" />
+        <module name="tomcat-access-logging-support" />
         <module name="tomcat-lifecycle-support" />
         <module name="tomcat-logging-support" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="tomcat-access-lifecycle-support" target="1.6" />
+      <module name="tomcat-access-logging-support" target="1.6" />
       <module name="tomcat-buildpack-support" target="1.6" />
       <module name="tomcat-lifecycle-support" target="1.6" />
       <module name="tomcat-logging-support" target="1.6" />
