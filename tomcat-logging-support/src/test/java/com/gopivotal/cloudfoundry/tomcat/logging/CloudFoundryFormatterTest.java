@@ -64,4 +64,14 @@ public final class CloudFoundryFormatterTest {
         assertTrue(this.formatter.format(record).split("\n").length > 1);
     }
 
+    @Test
+    public void parameter() {
+        LogRecord record = new LogRecord(Level.INFO, "Test Message {0}");
+        record.setLoggerName("short.logger");
+        record.setParameters(new String[]{"parameter-1"});
+
+        assertEquals("[CONTAINER] short.logger                                       INFO    Test Message " +
+                "parameter-1\n", this.formatter.format(record));
+    }
+
 }
