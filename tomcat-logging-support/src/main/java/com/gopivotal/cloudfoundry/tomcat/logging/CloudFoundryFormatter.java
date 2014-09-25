@@ -32,7 +32,7 @@ public final class CloudFoundryFormatter extends Formatter {
 
     @Override
     public String format(LogRecord record) {
-        return String.format(FORMAT, getLogger(record), record.getLevel(), record.getMessage(), getException(record));
+        return String.format(FORMAT, getLogger(record), record.getLevel(), formatMessage(record), getException(record));
     }
 
     private String getException(LogRecord record) {
