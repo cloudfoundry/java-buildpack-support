@@ -16,13 +16,37 @@
 
 package com.gopivotal.cloudfoundry.tomcat.logging;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.io.PrintStream;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public final class CloudFoundryConsoleHandlerTest {
 
+    private final PrintStream mockErr = mock(PrintStream.class);
+
+    private PrintStream savedErr = System.err;
+
+    @Before
+    public void before() {
+        this.savedErr = System.err;
+    }
+
+    @After
+    public void after() {
+        System.setErr(this.savedErr);
+    }
+
     @Test
-    public void test() {
+    public void test() throws NoSuchFieldException, IllegalAccessException {
+        System.setErr(this.mockErr);
         new CloudFoundryConsoleHandler();
+        verify(this.mockErr, times(0)).close();
     }
 
 }
