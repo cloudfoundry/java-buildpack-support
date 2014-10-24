@@ -16,7 +16,11 @@
 
 package com.gopivotal.cloudfoundry.tomcat.logging;
 
+import java.lang.reflect.Field;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.logging.ConsoleHandler;
+import java.util.logging.StreamHandler;
 
 /**
  * An extension of {@link ConsoleHandler} that outputs to {@link System#out}.
@@ -26,10 +30,30 @@ public final class CloudFoundryConsoleHandler extends ConsoleHandler {
     /**
      * Creates a new instance setting the formatter and output stream
      */
-    public CloudFoundryConsoleHandler() {
+    public CloudFoundryConsoleHandler() throws NoSuchFieldException, IllegalAccessException {
         super();
+        saveStdErrFromIrresponsibleClose(this);
         setFormatter(new CloudFoundryFormatter());
         setOutputStream(System.out);
+    }
+
+    private static void saveStdErrFromIrresponsibleClose(CloudFoundryConsoleHandler target) throws
+            NoSuchFieldException, IllegalAccessException {
+        final Field output = StreamHandler.class.getDeclaredField("output");
+        final Field writer = StreamHandler.class.getDeclaredField("writer");
+
+        AccessController.doPrivileged(new PrivilegedAction<Void>() {
+
+            @Override
+            public Void run() {
+                output.setAccessible(true);
+                writer.setAccessible(true);
+                return null;
+            }
+        });
+
+        output.set(target, null);
+        writer.set(target, null);
     }
 
 }
