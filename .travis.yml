@@ -1,34 +1,35 @@
----
 language: java
 script: |
-    if [[ "$SONAR_BUILD" == 'true' && "$TRAVIS_SECURE_ENV_VARS" == 'true' ]] ; then
-      mvn sonar:sonar -Dsonar.host.url="$SONAR_HOST_URL" -Dsonar.login="$SONAR_LOGIN" -Dsonar.password="$SONAR_PASSWORD" -Dsonar.jdbc.url="jdbc:mysql://$SONAR_JDBC_URL?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true" -Dsonar.jdbc.username="$SONAR_JDBC_USERNAME" -Dsonar.jdbc.password="$SONAR_JDBC_PASSWORD"
-    else
-      mvn test
-    fi
+  if [[ "$SONAR_BUILD" == 'true' && "$TRAVIS_SECURE_ENV_VARS" == 'true' ]] ; then
+    mvn sonar:sonar -Dsonar.host.url="$SONAR_HOST_URL" -Dsonar.login="$SONAR_LOGIN" -Dsonar.password="$SONAR_PASSWORD" -Dsonar.jdbc.url="jdbc:mysql://$SONAR_JDBC_URL?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true" -Dsonar.jdbc.username="$SONAR_JDBC_USERNAME" -Dsonar.jdbc.password="$SONAR_JDBC_PASSWORD"
+  else
+    mvn test
+  fi
 jdk:
-  - openjdk6
-  - openjdk7
-  - oraclejdk8
+- openjdk6
+- openjdk7
+- oraclejdk8
 env:
   global:
-    - secure: CRSHbRhWa7+jX/SyZ2c4zfEuRmhh89n+fe5/CXHoAsQ4w7mhkNAwEKSUjowqywerkcTzrzD4Bi6/gi/LmZCOEVWA18u/2z42Bfi9+7tQfIRfs6xuGyPWV1wvBGYCg6DHpo5i2tyjjdSsMQ64xSs3873XGlmHUisAqw8H9ydcq2M= # SONAR_HOST_URL
-    - secure: ZrMzZOBPUYDiir/C6pUuZWPhuoRl4VOcGgjP65yprFpsWupFDiEYYJO7rHV33wuja1KAYqZk2ehLc8COfCP2Xk49vkwAcSm9EL8H4wcvDSTURMtT/2k4tQqUP0GH9LaXF7BEU4rcNIqQKvzyhHd80TfqcX/axB5Y6M7Pnhgt8JA= # SONAR_LOGIN
-    - secure: SCY7J8MxhPXgi3gL1jqe2P4X6odbttZlr6prUw+WAIZBKQmYthrqzrF7IQoMYnUfhs0AkyIFPZlg1121AGh9R02gogW9g3O6PPp3gfl9i4GlHSuTagNzLorr8MXLNTHHrLIpVB27BywCajGz/MG+Bz8dIwHROwUlDCUTeAP7oH8= # SONAR_PASSWORD
-    - secure: agcIxyj93Mo1dhX0YjQcn7lYu4lymFa8ybbT22uh85OK8UgnwZuuihBLoYgA6Vw9K9jcPzG+y3+/tcRORs6pc6SI4l2T0jY/uIYTqzCwR/C+cooSwlZE0J5XyVJwjYMDPhtcfXGl4To4FY2zO3ZYqaK77Lvj6igkkKOjt8yu22w= # SONAR_JDBC_URL
-    - secure: eTY6nf+XCDQqy2J21l0TbeZGtlqdbSX+l9+ADRdI4ykFPdaEza4tFVBYqkMFZUixJdueHoUG6LzS1Q1j1tOKLsDlpMNI8e36WTgZiLrrL2m9GgiLVLTqoks55zClhd8+MMbOnuf1fBBNqLk+MzX7M33PwoA+KmHDgPqZy2AgAjI= # SONAR_JDBC_USERNAME
-    - secure: VMes406P5pBFb+YjsHxiOrFRb25hnlnvnEvZ8WRst/0V9mhNN+ee7KhkI3fCYTa5NR+wHVY/sVHYFmw86ZCJBjn8JucSlLGA9bLOFzSG/F6dxeaaZjQrShdVw9sYON/nO257DCRm1xwzafLUvKbDI6jbNXp1JFkIQSVUf76Ryuc= # SONAR_JDBC_PASSWORD
+  - secure: CRSHbRhWa7+jX/SyZ2c4zfEuRmhh89n+fe5/CXHoAsQ4w7mhkNAwEKSUjowqywerkcTzrzD4Bi6/gi/LmZCOEVWA18u/2z42Bfi9+7tQfIRfs6xuGyPWV1wvBGYCg6DHpo5i2tyjjdSsMQ64xSs3873XGlmHUisAqw8H9ydcq2M= # SONAR_HOST_URL
+  - secure: ZrMzZOBPUYDiir/C6pUuZWPhuoRl4VOcGgjP65yprFpsWupFDiEYYJO7rHV33wuja1KAYqZk2ehLc8COfCP2Xk49vkwAcSm9EL8H4wcvDSTURMtT/2k4tQqUP0GH9LaXF7BEU4rcNIqQKvzyhHd80TfqcX/axB5Y6M7Pnhgt8JA= # SONAR_LOGIN
+  - secure: SCY7J8MxhPXgi3gL1jqe2P4X6odbttZlr6prUw+WAIZBKQmYthrqzrF7IQoMYnUfhs0AkyIFPZlg1121AGh9R02gogW9g3O6PPp3gfl9i4GlHSuTagNzLorr8MXLNTHHrLIpVB27BywCajGz/MG+Bz8dIwHROwUlDCUTeAP7oH8= # SONAR_PASSWORD
+  - secure: agcIxyj93Mo1dhX0YjQcn7lYu4lymFa8ybbT22uh85OK8UgnwZuuihBLoYgA6Vw9K9jcPzG+y3+/tcRORs6pc6SI4l2T0jY/uIYTqzCwR/C+cooSwlZE0J5XyVJwjYMDPhtcfXGl4To4FY2zO3ZYqaK77Lvj6igkkKOjt8yu22w= # SONAR_JDBC_URL
+  - secure: eTY6nf+XCDQqy2J21l0TbeZGtlqdbSX+l9+ADRdI4ykFPdaEza4tFVBYqkMFZUixJdueHoUG6LzS1Q1j1tOKLsDlpMNI8e36WTgZiLrrL2m9GgiLVLTqoks55zClhd8+MMbOnuf1fBBNqLk+MzX7M33PwoA+KmHDgPqZy2AgAjI= # SONAR_JDBC_USERNAME
+  - secure: VMes406P5pBFb+YjsHxiOrFRb25hnlnvnEvZ8WRst/0V9mhNN+ee7KhkI3fCYTa5NR+wHVY/sVHYFmw86ZCJBjn8JucSlLGA9bLOFzSG/F6dxeaaZjQrShdVw9sYON/nO257DCRm1xwzafLUvKbDI6jbNXp1JFkIQSVUf76Ryuc= # SONAR_JDBC_PASSWORD
   matrix:
-    - SONAR_BUILD=true
-    - SONAR_BUILD=false
+  - SONAR_BUILD=true
+  - SONAR_BUILD=false
 matrix:
   exclude:
-    - jdk: openjdk6
-      env: SONAR_BUILD=true
-    - jdk: oraclejdk8
-      env: SONAR_BUILD=true
+  - jdk: openjdk6
+    env: SONAR_BUILD=true
+  - jdk: oraclejdk8
+    env: SONAR_BUILD=true
 notifications:
+  slack:
+    secure: aeUEo1teZIzcbhULuiTN8y5NwZaXYxj0kYU9S8UNIpJKQkGKg96ZAGePvi6STc6ZaWy3un5sur8AIL9JV5iFQJP7WrSiB7ccFxBRGmL1cTVgJI8pe7LiduCI0e1EPzAB3DLF6Sw68BCTlAiyilI+pfH38HJhM3p9H433ZXW+myY=
   webhooks:
     urls:
-      - http://build-monitor.cfapps.io/projects/JBPS/webhook
+    - http://build-monitor.cfapps.io/projects/JBPS/webhook
     on_start: true
