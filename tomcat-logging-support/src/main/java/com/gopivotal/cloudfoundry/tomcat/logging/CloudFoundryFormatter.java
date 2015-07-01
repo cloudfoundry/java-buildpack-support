@@ -52,7 +52,7 @@ public final class CloudFoundryFormatter extends Formatter {
     private String getLogger(LogRecord record) {
         String loggerName = record.getLoggerName();
 
-        if (loggerName.length() > MAX_LENGTH) {
+        if (loggerName != null && loggerName.length() > MAX_LENGTH) {
             return loggerName.substring(loggerName.length() - MAX_LENGTH);
         }
 
