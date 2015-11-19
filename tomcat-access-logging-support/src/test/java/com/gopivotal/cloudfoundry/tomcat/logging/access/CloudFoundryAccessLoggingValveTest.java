@@ -18,6 +18,7 @@ package com.gopivotal.cloudfoundry.tomcat.logging.access;
 
 import org.junit.Test;
 
+import java.io.CharArrayWriter;
 import java.io.PrintStream;
 
 import static org.mockito.Mockito.mock;
@@ -32,10 +33,11 @@ public final class CloudFoundryAccessLoggingValveTest {
     @Test
     public void log() {
         PrintStream stdout = System.out;
+        CharArrayWriter input=new CharArrayWriter();
+        input.append("Testing");
         try {
             System.setOut(testStream);
-
-            valve.log("Testing");
+            valve.log(input);
             verify(testStream).println("Testing");
 
         } finally {

@@ -18,6 +18,8 @@ package com.gopivotal.cloudfoundry.tomcat.logging.access;
 
 import org.apache.catalina.valves.AccessLogValve;
 
+import java.io.CharArrayWriter;
+
 /**
  * An extension of {@link org.apache.catalina.valves.AccessLogValve} that logs to {@link System#out}.
  */
@@ -30,8 +32,7 @@ public final class CloudFoundryAccessLoggingValve extends AccessLogValve {
      */
     @SuppressWarnings("PMD.SystemPrintln")
     @Override
-    public void log(String message) {
-        System.out.println(message);
+    public void log(CharArrayWriter message) {
+        System.out.println(message.toString());
     }
-
 }
