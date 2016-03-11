@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2014 the original author or authors.
+ * Copyright 2013-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,11 +73,11 @@ public final class CloudFoundryFormatterTest {
         assertEquals("[CONTAINER] short.logger                                       INFO    Test Message " +
                 "parameter-1\n", this.formatter.format(record));
     }
-    
+
     @Test
     public void nullLoggerName() {
     	LogRecord record = new LogRecord(Level.INFO, "Message OK");
-    	
+
     	assertEquals("[CONTAINER] null                                               INFO    Message OK\n",
     			this.formatter.format(record));
     }
