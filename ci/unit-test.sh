@@ -1,7 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 set -e
 
-pushd java-buildpack-support
-  ./mvnw -q package
-popd
+cd java-buildpack-support
+./mvnw -q package
