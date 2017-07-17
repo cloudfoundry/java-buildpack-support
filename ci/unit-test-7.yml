@@ -14,8 +14,4 @@ caches:
 - path: maven
 
 run:
-  path: java-buildpack-support/ci/deploy.sh
-
-params:
-  ARTIFACTORY_USERNAME:
-  ARTIFACTORY_PASSWORD:
+  path: java-buildpack-support/ci/unit-test.sh
