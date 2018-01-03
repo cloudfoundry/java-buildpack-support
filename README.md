@@ -1,5 +1,11 @@
 # Java Buildpack Support
-[![Build Status](https://travis-ci.org/cloudfoundry/java-buildpack-support.svg?branch=master)](https://travis-ci.org/cloudfoundry/java-buildpack-support)
+
+| Job | Status
+| --- | ------
+| `unit-test-7` | [![unit-test-master](https://java-experience.ci.springapps.io/api/v1/teams/java-experience/pipelines/support/jobs/unit-test-7/badge)](https://java-experience.ci.springapps.io/teams/java-experience/pipelines/support/jobs/unit-test-7)
+| `unit-test-8` | [![unit-test-master](https://java-experience.ci.springapps.io/api/v1/teams/java-experience/pipelines/support/jobs/unit-test-8/badge)](https://java-experience.ci.springapps.io/teams/java-experience/pipelines/support/jobs/unit-test-8)
+| `deploy` | [![deploy-master](https://java-experience.ci.springapps.io/api/v1/teams/java-experience/pipelines/support/jobs/deploy/badge)](https://java-experience.ci.springapps.io/teams/java-experience/pipelines/support/jobs/deploy)
+
 
 A collection of JARs in support of the [Java Buildpack](https://github.com/cloudfoundry/java-buildpack).
 
