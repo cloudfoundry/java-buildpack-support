@@ -25,7 +25,7 @@
     <parent>
         <groupId>io.spring.platform</groupId>
         <artifactId>platform-bom</artifactId>
-        <version>Brussels-SR6</version>
+        <version>Brussels-SR7</version>
     </parent>
 
     <groupId>org.cloudfoundry</groupId>
@@ -34,7 +34,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <tomcat.version>7.0.82</tomcat.version>
+        <tomcat.version>7.0.84</tomcat.version>
     </properties>
 
     <modules>
