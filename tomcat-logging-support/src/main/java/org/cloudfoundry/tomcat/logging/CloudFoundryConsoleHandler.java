@@ -16,44 +16,47 @@
 
 package org.cloudfoundry.tomcat.logging;
 
-import java.lang.reflect.Field;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.logging.ConsoleHandler;
+import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;
 
 /**
  * An extension of {@link ConsoleHandler} that outputs to {@link System#out}.
  */
-public final class CloudFoundryConsoleHandler extends ConsoleHandler {
+public final class CloudFoundryConsoleHandler extends StreamHandler {
 
     /**
      * Creates a new instance setting the formatter and output stream
      */
-    public CloudFoundryConsoleHandler() throws NoSuchFieldException, IllegalAccessException {
+    public CloudFoundryConsoleHandler() {
         super();
-        saveStdErrFromIrresponsibleClose(this);
         setFormatter(new CloudFoundryFormatter());
         setOutputStream(System.out);
     }
 
-    private static void saveStdErrFromIrresponsibleClose(CloudFoundryConsoleHandler target) throws
-            NoSuchFieldException, IllegalAccessException {
-        final Field output = StreamHandler.class.getDeclaredField("output");
-        final Field writer = StreamHandler.class.getDeclaredField("writer");
+    /**
+     * Publish a {@code LogRecord}.
+     * <p>
+     * The logging request was made initially to a {@code Logger} object,
+     * which initialized the {@code LogRecord} and forwarded it here.
+     *
+     * @param record description of the log event. A null record is
+     *               silently ignored and is not published
+     */
+    @Override
+    public void publish(LogRecord record) {
+        super.publish(record);
+        flush();
+    }
 
-        AccessController.doPrivileged(new PrivilegedAction<Void>() {
-
-            @Override
-            public Void run() {
-                output.setAccessible(true);
-                writer.setAccessible(true);
-                return null;
-            }
-        });
-
-        output.set(target, null);
-        writer.set(target, null);
+    /**
+     * Override {@code StreamHandler.close} to do a flush but not
+     * to close the output stream.  That is, we do <b>not</b>
+     * close {@code System.err}.
+     */
+    @Override
+    public void close() {
+        flush();
     }
 
 }
