@@ -43,7 +43,7 @@ public final class CloudFoundryConsoleHandlerTest {
     }
 
     @Test
-    public void test() throws NoSuchFieldException, IllegalAccessException {
+    public void test() {
         System.setErr(this.mockErr);
         new CloudFoundryConsoleHandler();
         verify(this.mockErr, times(0)).close();
