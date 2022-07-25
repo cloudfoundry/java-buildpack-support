@@ -16,16 +16,23 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="tomcat-access-logging-support" />
         <module name="tomcat-lifecycle-support" />
         <module name="tomcat-logging-support" />
+        <module name="tomcat-access-logging-support" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="java-buildpack-support" target="1.6" />
-      <module name="tomcat-access-logging-support" target="1.7" />
-      <module name="tomcat-lifecycle-support" target="1.7" />
-      <module name="tomcat-logging-support" target="1.7" />
+      <module name="java-buildpack-support" target="8" />
+      <module name="tomcat-access-logging-support" target="1.8" />
+      <module name="tomcat-lifecycle-support" target="1.8" />
+      <module name="tomcat-logging-support" target="1.8" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="tomcat-access-logging-support" options="-Werror -Xlint:all -Xlint:-options -Xlint:-processing -Xlint:-serial" />
+      <module name="tomcat-lifecycle-support" options="-Werror -Xlint:all -Xlint:-options -Xlint:-processing -Xlint:-serial" />
+      <module name="tomcat-logging-support" options="-Werror -Xlint:all -Xlint:-options -Xlint:-processing -Xlint:-serial" />
+    </option>
   </component>
 </project>

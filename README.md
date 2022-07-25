@@ -1,12 +1,5 @@
 # Java Buildpack Support
 
-| Job | Status
-| --- | ------
-| `unit-test-7` | [![unit-test-master](https://java-experience.ci.springapps.io/api/v1/teams/java-experience/pipelines/support/jobs/unit-test-7/badge)](https://java-experience.ci.springapps.io/teams/java-experience/pipelines/support/jobs/unit-test-7)
-| `unit-test-8` | [![unit-test-master](https://java-experience.ci.springapps.io/api/v1/teams/java-experience/pipelines/support/jobs/unit-test-8/badge)](https://java-experience.ci.springapps.io/teams/java-experience/pipelines/support/jobs/unit-test-8)
-| `deploy` | [![deploy-master](https://java-experience.ci.springapps.io/api/v1/teams/java-experience/pipelines/support/jobs/deploy/badge)](https://java-experience.ci.springapps.io/teams/java-experience/pipelines/support/jobs/deploy)
-
-
 A collection of JARs in support of the [Java Buildpack](https://github.com/cloudfoundry/java-buildpack).
 
 ## Tomcat Buildpack Support
@@ -21,12 +14,14 @@ The list of published versions of this JAR can be found at the following locatio
 | Tomcat Buildpack Support | <http://download.pivotal.io.s3.amazonaws.com/tomcat-buildpack-support/index.yml>
 
 ## Contributing
+
 [Pull requests][] are welcome; see the [contributor guidelines][] for details.
 
 [Pull requests]: http://help.github.com/send-pull-requests
 [contributor guidelines]: CONTRIBUTING.md
 
 ## License
-The Tomcat Builder is released under version 2.0 of the [Apache License][].
+
+The Java Buildpack Support is released under version 2.0 of the [Apache License][].
 
 [Apache License]: http://www.apache.org/licenses/LICENSE-2.0

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2013-2019 the original author or authors.
+  ~ Copyright 2013-2022 the original author or authors.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -18,23 +18,43 @@
 <project
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="http://maven.apache.org/POM/4.0.0"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>io.spring.platform</groupId>
-        <artifactId>platform-bom</artifactId>
-        <version>Brussels-SR14</version>
-    </parent>
-
     <groupId>org.cloudfoundry</groupId>
     <artifactId>java-buildpack-support</artifactId>
+    <name>Java Buildpack Support</name>
+    <description>A collection of JARs in support of the Java Buildpack</description>
     <version>3.4.0.BUILD-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <url>https://github.com/cloudfoundry/java-buildpack-support</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/cloudfoundry/java-buildpack-support.git</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>VMware</name>
+            <email>info@vmware.com</email>
+            <organization>VMware, Inc.</organization>
+            <organizationUrl>https://www.cloudfoundry.org</organizationUrl>
+        </developer>
+    </developers>
 
     <properties>
-        <tomcat.version>7.0.91</tomcat.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <tomcat.version>9.0.65</tomcat.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <modules>
@@ -50,6 +70,23 @@
                 <artifactId>tomcat-coyote</artifactId>
                 <version>${tomcat.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat</groupId>
+                <artifactId>tomcat-catalina</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.13.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>2.28.2</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -59,16 +96,24 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.7.0</version>
+                    <version>3.8.1</version>
                     <configuration>
-                        <source>1.7</source>
-                        <target>1.7</target>
+                        <compilerArgs>
+                            <arg>-Werror</arg>
+                            <arg>-Xlint:all</arg>
+                            <arg>-Xlint:-options</arg>
+                            <arg>-Xlint:-processing</arg>
+                            <arg>-Xlint:-serial</arg>
+                        </compilerArgs>
+                        <showWarnings>true</showWarnings>
+                        <source>1.8</source>
+                        <target>1.8</target>
                     </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>3.0.1</version>
+                    <version>3.2.1</version>
                     <executions>
                         <execution>
                             <id>attach-sources</id>
@@ -81,7 +126,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.20</version>
+                    <version>2.22.2</version>
                     <configuration>
                         <runOrder>random</runOrder>
                     </configuration>
@@ -93,7 +138,7 @@
             <plugin>
                 <groupId>org.jfrog.buildinfo</groupId>
                 <artifactId>artifactory-maven-plugin</artifactId>
-                <version>2.6.1</version>
+                <version>2.7.0</version>
                 <inherited>false</inherited>
                 <executions>
                     <execution>
@@ -113,6 +158,26 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -121,9 +186,9 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-            <id>central</id>
-            <name>bintray-plugins</name>
-            <url>https://jcenter.bintray.com</url>
+            <id>jfrog-jars</id>
+            <name>jfrog-jars</name>
+            <url>https://oss.jfrog.org/artifactory/jfrog-jars/</url>
         </pluginRepository>
     </pluginRepositories>
 
