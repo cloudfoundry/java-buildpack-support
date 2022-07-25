@@ -22,11 +22,11 @@ import org.apache.catalina.Lifecycle;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.core.StandardContext;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -49,7 +49,7 @@ public final class ApplicationStartupFailureDetectingLifecycleListenerTest {
     public void irrelevantEvent() {
         this.lifecycleListener.lifecycleEvent(new LifecycleEvent(this.lifecycle, Lifecycle.AFTER_DESTROY_EVENT, null));
 
-        verifyZeroInteractions(this.runtime);
+        verifyNoMoreInteractions(this.runtime);
     }
 
     @Test
@@ -58,7 +58,7 @@ public final class ApplicationStartupFailureDetectingLifecycleListenerTest {
 
         this.lifecycleListener.lifecycleEvent(new LifecycleEvent(this.lifecycle, Lifecycle.AFTER_START_EVENT, null));
 
-        verifyZeroInteractions(this.runtime);
+        verifyNoMoreInteractions(this.runtime);
     }
 
     @Test
@@ -68,7 +68,7 @@ public final class ApplicationStartupFailureDetectingLifecycleListenerTest {
 
         this.lifecycleListener.lifecycleEvent(new LifecycleEvent(this.lifecycle, Lifecycle.AFTER_START_EVENT, null));
 
-        verifyZeroInteractions(this.runtime);
+        verifyNoMoreInteractions(this.runtime);
     }
 
     @Test

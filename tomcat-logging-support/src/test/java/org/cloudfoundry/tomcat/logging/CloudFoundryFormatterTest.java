@@ -16,13 +16,13 @@
 
 package org.cloudfoundry.tomcat.logging;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class CloudFoundryFormatterTest {
 

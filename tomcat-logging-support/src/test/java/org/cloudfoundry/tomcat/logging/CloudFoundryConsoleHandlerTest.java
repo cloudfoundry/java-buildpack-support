@@ -16,9 +16,9 @@
 
 package org.cloudfoundry.tomcat.logging;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.PrintStream;
 
@@ -32,12 +32,12 @@ public final class CloudFoundryConsoleHandlerTest {
 
     private PrintStream savedErr = System.err;
 
-    @Before
+    @BeforeEach
     public void before() {
         this.savedErr = System.err;
     }
 
-    @After
+    @AfterEach
     public void after() {
         System.setErr(this.savedErr);
     }

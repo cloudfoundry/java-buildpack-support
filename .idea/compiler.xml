@@ -17,8 +17,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="tomcat-lifecycle-support" />
-        <module name="tomcat-logging-support" />
         <module name="tomcat-access-logging-support" />
+        <module name="tomcat-logging-support" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
