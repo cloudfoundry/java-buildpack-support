@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 
 /**
  * This LifecycleListener shuts down Tomcat 6 or 7 if an application fails to start.
- * <p/>
+ * 
  * In Cloud Foundry, which supports only a single host with a single context, the listener should be added to the Host
  * element.
  */
@@ -57,9 +57,6 @@ public final class ApplicationStartupFailureDetectingLifecycleListener implement
         this.runtime = runtime;
     }
 
-    /**
-     * @inheritDoc
-     */
     @Override
     public void lifecycleEvent(LifecycleEvent event) {
         if (event.getType() == Lifecycle.AFTER_START_EVENT) {
