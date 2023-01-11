@@ -54,6 +54,9 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <tomcat.version>9.0.65</tomcat.version>
+	<maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
+        <maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
+	<maven-artifactory-plugin.version>3.5.1</maven-artifactory-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -140,7 +143,7 @@
             <plugin>
                 <groupId>org.jfrog.buildinfo</groupId>
                 <artifactId>artifactory-maven-plugin</artifactId>
-                <version>2.7.0</version>
+                <version>${maven-artifactory-plugin.version}</version>
                 <inherited>false</inherited>
                 <executions>
                     <execution>
@@ -163,7 +166,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>${maven-gpg-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
@@ -177,6 +180,27 @@
                                 <arg>loopback</arg>
                             </gpgArguments>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+		    <plugin>
+		 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-source-plugin</artifactId>
+	    </plugin>
+	    <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <configuration>
+                        <quiet>true</quiet>
+			<source>1.8</source>
+                </configuration>
+		<executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
